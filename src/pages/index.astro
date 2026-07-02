@@ -1,0 +1,228 @@
+---
+import "../styles/global.css";
+
+const cards = [
+  {
+    label: "Records",
+    title: "Notes stuck in paper files",
+    scatter: { x: -300, y: -150, rotate: -6 },
+  },
+  {
+    label: "Follow-up",
+    title: "Follow-ups kept in memory",
+    scatter: { x: 90, y: 0, rotate: 5 },
+  },
+  {
+    label: "History",
+    title: "Prescriptions in old registers",
+    scatter: { x: -20, y: -180, rotate: 4 },
+  },
+  {
+    label: "Vitals",
+    title: "Jotted on a nurse's notepad",
+    scatter: { x: -300, y: 140, rotate: 5 },
+  },
+  {
+    label: "Reports",
+    title: "Lab reports in WhatsApp photos",
+    scatter: { x: 300, y: -150, rotate: 6 },
+  },
+  {
+    label: "Medication",
+    title: "what they were on lives in three different places",
+    scatter: { x: 300, y: 140, rotate: -6 },
+  },
+  {
+    label: "Time",
+    title: "Doctors searching, not treating",
+    scatter: { x: -180, y: -30, rotate: -5 },
+  },
+  {
+    label: "Allergies",
+    title: "Known only because one staff member remembers",
+    scatter: { x: 0, y: 140, rotate: -1 },
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Flash captures scattered patient notes, prescriptions, reports, and follow-ups into one clear clinical story."
+    />
+    <title>Flash | Capture Care Faster</title>
+  </head>
+  <body>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <nav class="nav" aria-label="Primary navigation">
+          <a class="brand" href="/">Flash >></a>
+          <div class="nav-actions">
+            <a href="#clinics">For clinics</a>
+            <a href="#hospitals">For hospitals</a>
+          </div>
+        </nav>
+
+        <div class="hero-copy">
+          <h1 id="hero-title">Capture care faster.<br />Understand patients better.</h1>
+          <p>
+            Record consultations, prescriptions, reports, and follow-ups in one
+            place, then turns patient history into a clear clinical story.
+          </p>
+        </div>
+
+        <div class="hero-visuals" aria-label="Flash patient management preview">
+          <img class="doctor-asset" src="/assets/doctor.png" alt="" aria-hidden="true" />
+          <img
+            class="product-screenshot"
+            src="/assets/app-splash.png"
+            alt="Flash patient management dashboard showing visits, follow-ups, appointments, and lab trails"
+          />
+        </div>
+      </section>
+
+      <section class="patient-story" aria-labelledby="patient-title">
+        <div class="story-copy">
+          <h2 id="patient-title">Patient information is everywhere</h2>
+          <p>A patient's file lives in multiple places and you don’t have the time to gather it before the next visit.</p>
+        </div>
+
+        <div class="card-stage" data-card-stage>
+          <div class="cards-pin">
+            <div class="cards-grid" aria-label="Scattered patient information that gathers into a grid">
+              {
+                cards.map((card) => (
+                  <article
+                    class="info-card"
+                    data-card-key={card.label.toLowerCase()}
+                    style={`--scatter-x:${card.scatter.x}px;--scatter-y:${card.scatter.y}px;--scatter-rotate:${card.scatter.rotate}deg;`}
+                  >
+                    <span>{card.label}</span>
+                    <h3>{card.title}</h3>
+                  </article>
+                ))
+              }
+            </div>
+
+            <div class="gather-copy">
+              <h2>Flash gathers it for you</h2>
+              <p>Every note, prescription, and report, pulled into one patient story, organised and ready before you walk in.</p>
+            </div>
+          </div>
+        </div>
+
+        <section class="future-content" aria-label="Future content area"></section>
+      </section>
+    </main>
+
+    <script>
+      import gsap from "gsap";
+      import { Draggable } from "gsap/Draggable";
+
+      gsap.registerPlugin(Draggable);
+
+      const cards = gsap.utils.toArray(".info-card");
+      const stage = document.querySelector("[data-card-stage]");
+      const gatherCopy = document.querySelector(".gather-copy");
+      const storageKey = "flash-card-scatter-positions";
+
+      const mm = gsap.matchMedia();
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const scatterScale = window.matchMedia("(max-width: 760px)").matches ? 0.52 : 1;
+        const easeCards = gsap.parseEase("power2.inOut");
+        const savedPositions = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        const scatterValues = cards.map((card) => ({
+          x: savedPositions[card.dataset.cardKey]?.x ?? Number.parseFloat(card.style.getPropertyValue("--scatter-x")) * scatterScale,
+          y: savedPositions[card.dataset.cardKey]?.y ?? Number.parseFloat(card.style.getPropertyValue("--scatter-y")) * scatterScale,
+          rotation: Number.parseFloat(card.style.getPropertyValue("--scatter-rotate")),
+        }));
+        let sceneProgress = 0;
+
+        const setSceneProgress = (progress) => {
+          sceneProgress = progress;
+          const gatherProgress = gsap.utils.clamp(0, 1, (progress - 0.24) / 0.46);
+          const easedProgress = easeCards(gatherProgress);
+
+          cards.forEach((card, index) => {
+            const scatter = scatterValues[index];
+            gsap.set(card, {
+              x: scatter.x * (1 - easedProgress),
+              y: scatter.y * (1 - easedProgress),
+              rotation: scatter.rotation * (1 - easedProgress),
+            });
+          });
+
+          gsap.set(gatherCopy, {
+            xPercent: -50,
+            opacity: gatherProgress,
+            y: 90 * (1 - gatherProgress),
+          });
+        };
+
+        Draggable.create(cards, {
+          type: "x,y",
+          bounds: ".cards-pin",
+          edgeResistance: 0.75,
+          cursor: "grab",
+          activeCursor: "grabbing",
+          zIndexBoost: true,
+          onPress() {
+            setSceneProgress(0);
+          },
+          onDrag() {
+            const index = cards.indexOf(this.target);
+            scatterValues[index].x = this.x;
+            scatterValues[index].y = this.y;
+          },
+          onRelease() {
+            const index = cards.indexOf(this.target);
+            scatterValues[index].x = this.x;
+            scatterValues[index].y = this.y;
+
+            const nextPositions = cards.reduce((positions, card, cardIndex) => {
+              positions[card.dataset.cardKey] = {
+                x: scatterValues[cardIndex].x,
+                y: scatterValues[cardIndex].y,
+              };
+              return positions;
+            }, {});
+
+            localStorage.setItem(storageKey, JSON.stringify(nextPositions));
+            window.flashCardPositions = nextPositions;
+            setSceneProgress(sceneProgress);
+          },
+        });
+
+        window.flashCardPositions = cards.reduce((positions, card, cardIndex) => {
+          positions[card.dataset.cardKey] = {
+            x: scatterValues[cardIndex].x,
+            y: scatterValues[cardIndex].y,
+          };
+          return positions;
+        }, {});
+
+        const updateFromScroll = () => {
+          const rect = stage.getBoundingClientRect();
+          const startOffset = 90;
+          const scrollDistance = 360;
+          const progress = gsap.utils.clamp(0, 1, (startOffset - rect.top) / scrollDistance);
+          setSceneProgress(progress);
+        };
+
+        updateFromScroll();
+        window.addEventListener("scroll", updateFromScroll, { passive: true });
+        window.addEventListener("resize", updateFromScroll);
+
+        return () => {
+          window.removeEventListener("scroll", updateFromScroll);
+          window.removeEventListener("resize", updateFromScroll);
+        };
+      });
+    </script>
+  </body>
+</html>

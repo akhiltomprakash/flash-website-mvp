@@ -1,0 +1,375 @@
+@import url("https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Bricolage+Grotesque:opsz,wght@14,400;14,600;14,700&family=IBM+Plex+Mono:wght@400&family=Inter:wght@600;700&display=swap");
+
+:root {
+  --ink: #11110f;
+  --muted: #4e514b;
+  --line: #1f211d;
+  --paper: #fffefa;
+  --soft: #f8f8f1;
+  --flash: #a7ff35;
+  --flash-soft: #dcff9f;
+  --card-shadow: 0 18px 35px rgba(20, 22, 18, 0.08);
+  font-family: "Bricolage Grotesque", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background:
+    linear-gradient(rgba(17, 17, 15, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 15, 0.025) 1px, transparent 1px),
+    var(--paper);
+  background-size: 20px 20px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero {
+  min-height: 100vh;
+  padding: 25px clamp(22px, 4vw, 56px) clamp(28px, 5vh, 64px);
+  position: relative;
+}
+
+.nav {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1180px;
+}
+
+.brand {
+  background: var(--flash);
+  border: 1px solid rgba(17, 17, 15, 0.16);
+  border-radius: 7px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 7px;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 14px;
+}
+
+.nav-actions a {
+  align-items: center;
+  border: 1.5px solid var(--line);
+  border-radius: 9px;
+  display: inline-flex;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 650;
+  min-height: 51px;
+  padding: 0 26px;
+}
+
+.hero-copy {
+  margin: 0 auto;
+  max-width: 760px;
+  text-align: center;
+}
+
+h1,
+h2 {
+  font-family: "Averia Serif Libre", Georgia, "Times New Roman", serif;
+  font-weight: 300;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(42px, 4.4vw, 48px);
+  line-height: 1;
+}
+
+.hero-copy p,
+.story-copy p,
+.gather-copy p {
+  color: var(--muted);
+  font-size: clamp(14px, 1.35vw, 16px);
+  line-height: 1.42;
+  margin: 12px auto 0;
+  max-width: 610px;
+}
+
+.hero-visuals {
+  height: clamp(360px, 49vh, 470px);
+  margin: clamp(48px, 13vh, 126px) auto 0;
+  max-width: 952px;
+  position: relative;
+  transform: scale(0.94);
+  transform-origin: center bottom;
+}
+
+.doctor-asset {
+  display: block;
+  height: auto;
+  left: 0;
+  position: absolute;
+  top: 220px;
+  width: 248px;
+  z-index: 2;
+}
+
+.product-screenshot {
+  border-radius: 12px;
+  box-shadow: none;
+  display: block;
+  height: auto;
+  left: 124px;
+  position: absolute;
+  top: 0;
+  width: min(704px, calc(100vw - 80px));
+  z-index: 1;
+}
+
+@media (min-width: 1400px) and (min-height: 850px) {
+  .hero-copy {
+    margin-top: 6px;
+  }
+
+  .hero-visuals {
+    margin-top: clamp(80px, 15vh, 150px);
+    transform: scale(0.9);
+  }
+}
+
+.patient-story {
+  padding: 135px clamp(22px, 4vw, 56px) 135px;
+}
+
+.story-copy,
+.gather-copy {
+  margin: 0 auto;
+  max-width: 840px;
+  text-align: center;
+}
+
+.story-copy h2,
+.gather-copy h2 {
+  font-size: clamp(38px, 4.4vw, 48px);
+  line-height: 1;
+}
+
+.card-stage {
+  height: 860px;
+  margin-top: 90px;
+  padding: 0;
+  position: relative;
+}
+
+.cards-pin {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 423px;
+  overflow: visible;
+  position: sticky;
+  top: 90px;
+  width: min(916px, calc(100vw - 44px));
+  margin: 0 auto;
+}
+
+.cards-grid {
+  --scatter-scale: 1;
+  --grid-height: 420px;
+  position: absolute;
+  left: 50%;
+  top: 260px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 230px));
+  justify-content: center;
+  max-width: 476px;
+  width: min(476px, 100%);
+}
+
+.info-card {
+  background: #fffefa;
+  border: 1.5px solid #14170f;
+  border-radius: 10px;
+  box-shadow: 4px 4px 0 rgba(20, 23, 15, 0.14);
+  min-height: 83px;
+  padding: 15.5px 19.5px;
+  transform:
+    translate(
+      calc(var(--scatter-x) * var(--scatter-scale)),
+      calc(var(--scatter-y) * var(--scatter-scale))
+    )
+    rotate(var(--scatter-rotate));
+  transform-origin: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.info-card:active {
+  cursor: grabbing;
+}
+
+.info-card span {
+  color: #777b72;
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.info-card h3 {
+  color: #14170f;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 6px 0 0;
+  max-width: 17ch;
+}
+
+.gather-copy {
+  left: 50%;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  top: 560px;
+  transform: translateX(-50%) translateY(90px);
+  width: min(510px, calc(100vw - 44px));
+}
+
+.future-content {
+  background: rgba(255, 254, 250, 0.72);
+  border: 1.5px solid rgba(20, 23, 15, 0.18);
+  border-radius: 10px;
+  min-height: 420px;
+  margin: 1000px auto 0;
+  max-width: 916px;
+  width: min(916px, calc(100vw - 44px));
+}
+
+@media (max-width: 760px) {
+  .hero {
+    padding-top: 20px;
+  }
+
+  .nav-actions {
+    gap: 8px;
+  }
+
+  .nav-actions a {
+    font-size: 11px;
+    min-height: 36px;
+    padding: 0 12px;
+  }
+
+  .hero-copy {
+    margin-top: 60px;
+  }
+
+  .hero-visuals {
+    height: 330px;
+    margin-top: 58px;
+    max-width: 420px;
+    transform: none;
+  }
+
+  .doctor-asset {
+    left: -8px;
+    top: 174px;
+    width: 150px;
+  }
+
+  .product-screenshot {
+    left: 54px;
+    width: min(360px, calc(100vw - 72px));
+  }
+
+  .patient-story {
+    padding-bottom: 90px;
+  }
+
+  .card-stage {
+    height: 760px;
+    margin-top: 90px;
+    padding: 0;
+  }
+
+  .cards-pin {
+    height: 423px;
+    top: 72px;
+  }
+
+  .gather-copy {
+    top: 496px;
+  }
+
+  .cards-grid {
+    --scatter-scale: 0.52;
+    --grid-height: 342px;
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 145px));
+    top: 235px;
+  }
+
+  .info-card {
+    border-width: 1.5px;
+    border-radius: 6px;
+    padding: 11px 12px;
+  }
+
+  .info-card span {
+    font-size: 7px;
+  }
+
+  .info-card h3 {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  .brand {
+    font-size: 15px;
+  }
+
+  .nav-actions a {
+    padding: 0 9px;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 132px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .gather-copy {
+    opacity: 1;
+    transform: none;
+  }
+
+  .info-card {
+    transform: none;
+  }
+}
