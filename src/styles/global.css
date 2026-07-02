@@ -72,15 +72,14 @@ a {
   border: 1.5px solid var(--line);
   border-radius: 9px;
   display: inline-flex;
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: "Bricolage Grotesque", Inter, ui-sans-serif, system-ui, sans-serif;
   font-size: 15px;
   font-weight: 650;
-  min-height: 51px;
-  padding: 0 26px;
+  padding: 12px 24px;
 }
 
 .hero-copy {
-  margin: 0 auto;
+  margin: 36px auto 0;
   max-width: 760px;
   text-align: center;
 }
