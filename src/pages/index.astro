@@ -71,6 +71,10 @@ const cards = [
         </nav>
 
         <div class="hero-copy">
+          <div class="hero-kicker" aria-hidden="true">
+            <span></span>
+            Live clinical memory
+          </div>
           <h1 id="hero-title">Capture care faster.<br />Understand patients better.</h1>
           <p>
             Record consultations, prescriptions, reports, and follow-ups in one
@@ -79,6 +83,9 @@ const cards = [
         </div>
 
         <div class="hero-visuals" aria-label="Flash patient management preview">
+          <div class="hero-glow" aria-hidden="true"></div>
+          <div class="hero-orbit hero-orbit-top" aria-hidden="true">Vitals synced</div>
+          <div class="hero-orbit hero-orbit-bottom" aria-hidden="true">Report found</div>
           <img class="doctor-asset" src="/assets/doctor.png" alt="" aria-hidden="true" />
           <img
             class="product-screenshot"
@@ -86,6 +93,9 @@ const cards = [
             alt="Flash patient management dashboard showing visits, follow-ups, appointments, and lab trails"
           />
         </div>
+        <a class="scroll-cue" href="#patient-title" aria-label="Scroll to patient story">
+          <span></span>
+        </a>
       </section>
 
       <section class="patient-story" aria-labelledby="patient-title">
@@ -121,40 +131,56 @@ const cards = [
         <section class="workflow-section" aria-labelledby="workflow-title">
           <div class="workflow-feature workflow-feature-scan">
             <div class="workflow-art workflow-art-scan" aria-hidden="true">
+              <span class="scan-pulse scan-pulse-a"></span>
+              <span class="scan-pulse scan-pulse-b"></span>
               <img src="/assets/scan-it.png" alt="" loading="lazy" />
             </div>
-            <div class="workflow-copy workflow-copy-scan">
-              <h2 id="workflow-title">Scan it.<br />Get a finished visit</h2>
+            <div class="workflow-copy workflow-copy-scan" data-feature-copy>
+              <span class="feature-copy-accent" aria-hidden="true"></span>
+              <h2 id="workflow-title">
+                <span class="feature-mask"><span class="feature-reveal-line">Scan it.</span></span>
+                <span class="feature-mask"><span class="feature-reveal-line">Get a finished visit</span></span>
+              </h2>
               <p>
-                Photograph a handwritten note or an old report. Plum reads it
-                and builds the entire visit instantly.
+                <span class="feature-text-mask"><span class="feature-reveal-text">Photograph a handwritten note or an old report.</span></span>
+                <span class="feature-text-mask"><span class="feature-reveal-text">Flash reads it and builds the entire visit instantly.</span></span>
               </p>
             </div>
           </div>
 
           <div class="workflow-feature workflow-feature-caught-up">
-            <div class="workflow-copy workflow-copy-caught-up">
-              <h2>Skip the catch-up</h2>
+            <div class="workflow-copy workflow-copy-caught-up" data-feature-copy>
+              <span class="feature-copy-accent" aria-hidden="true"></span>
+              <h2>
+                <span class="feature-mask"><span class="feature-reveal-line">Skip the catch-up</span></span>
+              </h2>
               <p>
-                All relevant patient details is distilled into a paragraph and
-                a clear timeline to help you understand it faster than ever.
+                <span class="feature-text-mask"><span class="feature-reveal-text">All relevant patient details are distilled into a paragraph</span></span>
+                <span class="feature-text-mask"><span class="feature-reveal-text">and a clear timeline to help you understand it faster than ever.</span></span>
               </p>
             </div>
             <div class="workflow-art workflow-art-caught-up" aria-hidden="true">
+              <span class="timeline-spark timeline-spark-a"></span>
+              <span class="timeline-spark timeline-spark-b"></span>
               <img src="/assets/already-caught-up.png" alt="" loading="lazy" />
             </div>
           </div>
 
           <div class="workflow-feature workflow-feature-questions">
-            <div class="workflow-copy workflow-copy-questions">
-              <h2>Ask it questions. Like a colleague</h2>
+            <div class="workflow-copy workflow-copy-questions" data-feature-copy>
+              <span class="feature-copy-accent" aria-hidden="true"></span>
+              <h2>
+                <span class="feature-mask"><span class="feature-reveal-line">Ask it questions.</span></span>
+                <span class="feature-mask"><span class="feature-reveal-line">Like a colleague</span></span>
+              </h2>
             </div>
             <div class="workflow-art workflow-art-questions" aria-hidden="true">
+              <span class="question-ring"></span>
               <img src="/assets/ask-it-questions.png" alt="" loading="lazy" />
             </div>
-            <p class="workflow-question-caption">
-              Search a patient's entire history in plain language, and get
-              instant results.
+            <p class="workflow-question-caption" data-feature-caption>
+              <span class="feature-text-mask"><span class="feature-reveal-text">Search a patient's entire history in plain language,</span></span>
+              <span class="feature-text-mask"><span class="feature-reveal-text">and get instant results.</span></span>
             </p>
           </div>
         </section>
@@ -164,8 +190,9 @@ const cards = [
     <script>
       import gsap from "gsap";
       import { Draggable } from "gsap/Draggable";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-      gsap.registerPlugin(Draggable);
+      gsap.registerPlugin(Draggable, ScrollTrigger);
 
       const cards = gsap.utils.toArray(".info-card");
       const stage = document.querySelector("[data-card-stage]");
@@ -175,6 +202,163 @@ const cards = [
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const heroTimeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        heroTimeline
+          .from(".nav", { y: -18, opacity: 0, duration: 0.65 })
+          .from(".hero-kicker", { y: 16, opacity: 0, duration: 0.55 }, "-=0.28")
+          .from(".hero-copy h1", { y: 34, opacity: 0, duration: 0.8 }, "-=0.32")
+          .from(".hero-copy p", { y: 22, opacity: 0, duration: 0.68 }, "-=0.45")
+          .from(".product-screenshot", { y: 70, opacity: 0, scale: 0.94, duration: 0.95 }, "-=0.32")
+          .from(".doctor-asset", { x: -58, y: 28, opacity: 0, rotate: -6, duration: 0.78 }, "-=0.52")
+          .from(".hero-orbit", { y: 18, opacity: 0, scale: 0.84, stagger: 0.12, duration: 0.54 }, "-=0.42")
+          .from(".scroll-cue", { opacity: 0, y: -10, duration: 0.38 }, "-=0.22");
+
+        gsap.to(".product-screenshot", {
+          y: -42,
+          rotateX: 3,
+          scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.8,
+          },
+        });
+
+        gsap.to(".doctor-asset", {
+          y: -76,
+          rotate: 2,
+          scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 0.9,
+          },
+        });
+
+        gsap.to(".hero-orbit-top", {
+          y: -56,
+          x: 26,
+          scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
+        gsap.to(".hero-orbit-bottom", {
+          y: -88,
+          x: -18,
+          scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
+        gsap.utils.toArray(".story-copy").forEach((item) => {
+          gsap.from(item, {
+            autoAlpha: 0,
+            y: 44,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 82%",
+              once: true,
+            },
+          });
+        });
+
+        gsap.utils.toArray("[data-feature-copy]").forEach((copy) => {
+          const feature = copy.closest(".workflow-feature");
+          const revealItems = copy.querySelectorAll(".feature-reveal-line, .feature-reveal-text");
+          const accent = copy.querySelector(".feature-copy-accent");
+          const caption = feature.querySelector("[data-feature-caption]");
+          const captionItems = caption?.querySelectorAll(".feature-reveal-text") ?? [];
+
+          const featureTextTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: feature,
+              start: "top 72%",
+              once: true,
+            },
+          });
+
+          featureTextTimeline
+            .from(accent, {
+              scaleX: 0,
+              opacity: 0,
+              duration: 0.52,
+              ease: "power3.out",
+              transformOrigin: copy.classList.contains("workflow-copy-caught-up") ? "right center" : "left center",
+            })
+            .from(revealItems, {
+              yPercent: 112,
+              opacity: 0,
+              rotate: 1.8,
+              duration: 0.78,
+              stagger: 0.075,
+              ease: "power4.out",
+            }, "-=0.24")
+            .from(captionItems, {
+              yPercent: 110,
+              opacity: 0,
+              duration: 0.64,
+              stagger: 0.07,
+              ease: "power3.out",
+            }, "-=0.28");
+        });
+
+        gsap.utils.toArray(".workflow-art").forEach((item) => {
+          gsap.from(item, {
+            autoAlpha: 0,
+            y: 70,
+            scale: 0.96,
+            duration: 0.95,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 84%",
+              once: true,
+            },
+          });
+        });
+
+        gsap.to(".workflow-art-scan img", {
+          y: -34,
+          rotate: -1.2,
+          scrollTrigger: {
+            trigger: ".workflow-feature-scan",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
+        gsap.to(".workflow-art-caught-up img", {
+          y: -42,
+          rotate: 1.4,
+          scrollTrigger: {
+            trigger: ".workflow-feature-caught-up",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
+        gsap.to(".workflow-art-questions img", {
+          x: -28,
+          scrollTrigger: {
+            trigger: ".workflow-feature-questions",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+
         const scatterScale = window.matchMedia("(max-width: 760px)").matches ? 0.52 : 1;
         const easeCards = gsap.parseEase("power2.inOut");
         const savedPositions = JSON.parse(localStorage.getItem(storageKey) || "{}");
