@@ -43,6 +43,83 @@ const cards = [
     scatter: { x: 52.3672, y: -53, rotate: -1 },
   },
 ];
+
+const platformModules = [
+  {
+    label: "Patients",
+    body: "Keep demographics, visits, prescriptions, reports, notes, and lab orders attached to the patient you are treating.",
+  },
+  {
+    label: "Visits",
+    body: "Capture the consultation from vitals and complaints through medicines, tests, files, payment, and follow-up.",
+  },
+  {
+    label: "Prescriptions",
+    body: "Create prescriptions from the visit, print them for the patient, and keep every prescription searchable later.",
+  },
+  {
+    label: "Appointments",
+    body: "Book, reschedule, and complete appointments so doctors and reception work from the same queue.",
+  },
+  {
+    label: "Billing",
+    body: "Track consultation fees, lab-order payments, receipts, and pending balances without a separate ledger.",
+  },
+  {
+    label: "Medicines",
+    body: "Watch stock levels, dispensing, and low-stock alerts so the clinic knows what needs attention.",
+  },
+  {
+    label: "Reports",
+    body: "Store lab reports, scans, and old prescription images inside the patient record so doctors can review them before deciding care.",
+  },
+  {
+    label: "Analytics",
+    body: "See today's visits, payments, activity, and stock alerts so the clinic can spot work that needs follow-up.",
+  },
+];
+
+const workflowSteps = [
+  {
+    label: "Front desk",
+    title: "Front desk books or finds the patient",
+    body: "Reception can search patients, book appointments, manage payments, and keep the queue moving.",
+  },
+  {
+    label: "Patient record",
+    title: "Doctor opens the full story",
+    body: "Visits, reports, prescriptions, notes, and AI summaries are ready before the consultation starts.",
+  },
+  {
+    label: "Consultation",
+    title: "The visit is documented once",
+    body: "Vitals, findings, medicines, lab tests, follow-up, files, and billing are captured in the same encounter.",
+  },
+  {
+    label: "Operations",
+    title: "The clinic stays synchronized",
+    body: "Appointments, prescriptions, inventory, billing, activity logs, and patient history update together.",
+  },
+];
+
+const faqItems = [
+  {
+    question: "Can we move from paper or WhatsApp files?",
+    answer: "Yes. Flash is built around scanning notes, uploading reports, and turning scattered records into a usable patient timeline.",
+  },
+  {
+    question: "Is AI making decisions?",
+    answer: "No. AI creates drafts and suggestions. Doctors review, edit, accept, or ignore them before anything becomes part of care.",
+  },
+  {
+    question: "Can staff use it without seeing clinical controls?",
+    answer: "Yes. Reception workflows focus on appointments, patients, and payments, while clinical visit editing stays with doctors.",
+  },
+  {
+    question: "Does it cover more than patient notes?",
+    answer: "Yes. The app includes appointments, prescriptions, lab orders, medicine inventory, payments, reports, notes, settings, and analytics.",
+  },
+];
 ---
 
 <!doctype html>
@@ -64,8 +141,6 @@ const cards = [
             <img src="/assets/logo.png" alt="Flash" />
           </a>
           <div class="nav-actions">
-            <a href="#clinics">For clinics</a>
-            <a href="#hospitals">For hospitals</a>
             <a class="nav-demo" href="#demo">Try demo</a>
           </div>
         </nav>
@@ -78,14 +153,12 @@ const cards = [
           <h1 id="hero-title">Capture care faster.<br />Understand patients better.</h1>
           <p>
             Record consultations, prescriptions, reports, and follow-ups in one
-            place, then turns patient history into a clear clinical story.
+            place, then turn patient history into a clear clinical story.
           </p>
         </div>
 
         <div class="hero-visuals" aria-label="Flash patient management preview">
           <div class="hero-glow" aria-hidden="true"></div>
-          <div class="hero-orbit hero-orbit-top" aria-hidden="true">Vitals synced</div>
-          <div class="hero-orbit hero-orbit-bottom" aria-hidden="true">Report found</div>
           <img class="doctor-asset" src="/assets/doctor.png" alt="" aria-hidden="true" />
           <img
             class="product-screenshot"
@@ -131,8 +204,6 @@ const cards = [
         <section class="workflow-section" aria-labelledby="workflow-title">
           <div class="workflow-feature workflow-feature-scan">
             <div class="workflow-art workflow-art-scan" aria-hidden="true">
-              <span class="scan-pulse scan-pulse-a"></span>
-              <span class="scan-pulse scan-pulse-b"></span>
               <img src="/assets/scan-it.png" alt="" loading="lazy" />
             </div>
             <div class="workflow-copy workflow-copy-scan" data-feature-copy>
@@ -142,8 +213,7 @@ const cards = [
                 <span class="feature-mask"><span class="feature-reveal-line">Get a finished visit</span></span>
               </h2>
               <p>
-                <span class="feature-text-mask"><span class="feature-reveal-text">Photograph a handwritten note or an old report.</span></span>
-                <span class="feature-text-mask"><span class="feature-reveal-text">Flash reads it and builds the entire visit instantly.</span></span>
+                <span class="feature-text-mask"><span class="feature-reveal-text">Snap a handwritten note, and build a finished visit in a flash.</span></span>
               </p>
             </div>
           </div>
@@ -155,13 +225,10 @@ const cards = [
                 <span class="feature-mask"><span class="feature-reveal-line">Skip the catch-up</span></span>
               </h2>
               <p>
-                <span class="feature-text-mask"><span class="feature-reveal-text">All relevant patient details are distilled into a paragraph</span></span>
-                <span class="feature-text-mask"><span class="feature-reveal-text">and a clear timeline to help you understand it faster than ever.</span></span>
+                <span class="feature-text-mask"><span class="feature-reveal-text">Get and understand patient history in seconds from anywhere.</span></span>
               </p>
             </div>
             <div class="workflow-art workflow-art-caught-up" aria-hidden="true">
-              <span class="timeline-spark timeline-spark-a"></span>
-              <span class="timeline-spark timeline-spark-b"></span>
               <img src="/assets/already-caught-up.png" alt="" loading="lazy" />
             </div>
           </div>
@@ -175,14 +242,88 @@ const cards = [
               </h2>
             </div>
             <div class="workflow-art workflow-art-questions" aria-hidden="true">
-              <span class="question-ring"></span>
-              <img src="/assets/ask-it-questions.png" alt="" loading="lazy" />
+              <video
+                class="ask-it-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                <source src="/assets/ask-it-questions.mp4" type="video/mp4" />
+              </video>
             </div>
             <p class="workflow-question-caption" data-feature-caption>
-              <span class="feature-text-mask"><span class="feature-reveal-text">Search a patient's entire history in plain language,</span></span>
-              <span class="feature-text-mask"><span class="feature-reveal-text">and get instant results.</span></span>
+              <span class="feature-text-mask"><span class="feature-reveal-text">Ask it anything related to your patients and get instant answers.</span></span>
             </p>
           </div>
+        </section>
+
+        <section class="platform-section" aria-labelledby="platform-title">
+          <div class="section-heading">
+            <h2 id="platform-title" class="platform-title">Complete patient workspace</h2>
+          </div>
+
+          <div class="module-tabs" aria-label="Flash platform modules">
+            {
+              platformModules.map((module) => (
+                <article class="module-card">
+                  <h3>{module.label}</h3>
+                  <p>{module.body}</p>
+                </article>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="clinic-flow" aria-labelledby="flow-title">
+          <div class="section-heading">
+            <h2 id="flow-title">From appointment to follow-up without losing context.</h2>
+          </div>
+
+          <div class="flow-map" aria-label="Flash daily clinic flow">
+            <div class="flow-rail" aria-hidden="true">
+              <span></span>
+            </div>
+
+            <div class="flow-steps">
+              {
+                workflowSteps.map((step, index) => (
+                  <article class="flow-step" style={`--flow-x:${[0, 290, 580, 870][index]}px;--flow-y:${[18, 56, 96, 120][index]}px;`}>
+                    <div class="flow-node" aria-hidden="true">{String(index + 1).padStart(2, "0")}</div>
+                    <div class="flow-step-copy">
+                      <span>{step.label}</span>
+                      <h3>{step.title}</h3>
+                      <p>{step.body}</p>
+                    </div>
+                  </article>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="flow-qa" aria-label="Clinic switching questions">
+            {
+              faqItems.map((item) => (
+                <details class="qa-item">
+                  <summary>{item.question}</summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))
+            }
+          </div>
+        </section>
+
+        <section class="final-cta" id="demo" aria-labelledby="demo-title">
+          <div>
+            <span>See Flash in clinic mode</span>
+            <h2 id="demo-title">Walk through a real patient, appointment, visit, prescription, and bill.</h2>
+            <p>
+              Use the demo to see how Flash handles the everyday work of a clinic,
+              not just the tidy parts of the record.
+            </p>
+          </div>
+          <a href="mailto:hello@flash.care?subject=Flash%20demo%20request">Book a demo</a>
         </section>
       </section>
     </main>
@@ -211,7 +352,6 @@ const cards = [
           .from(".hero-copy p", { y: 22, opacity: 0, duration: 0.68 }, "-=0.45")
           .from(".product-screenshot", { y: 70, opacity: 0, scale: 0.94, duration: 0.95 }, "-=0.32")
           .from(".doctor-asset", { x: -58, y: 28, opacity: 0, rotate: -6, duration: 0.78 }, "-=0.52")
-          .from(".hero-orbit", { y: 18, opacity: 0, scale: 0.84, stagger: 0.12, duration: 0.54 }, "-=0.42")
           .from(".scroll-cue", { opacity: 0, y: -10, duration: 0.38 }, "-=0.22");
 
         gsap.to(".product-screenshot", {
@@ -233,28 +373,6 @@ const cards = [
             start: "top top",
             end: "bottom top",
             scrub: 0.9,
-          },
-        });
-
-        gsap.to(".hero-orbit-top", {
-          y: -56,
-          x: 26,
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-
-        gsap.to(".hero-orbit-bottom", {
-          y: -88,
-          x: -18,
-          scrollTrigger: {
-            trigger: ".hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
           },
         });
 
@@ -349,13 +467,38 @@ const cards = [
           },
         });
 
-        gsap.to(".workflow-art-questions img", {
-          x: -28,
+        gsap.to(".ask-it-video", {
           scrollTrigger: {
             trigger: ".workflow-feature-questions",
             start: "top bottom",
             end: "bottom top",
             scrub: 1,
+          },
+        });
+
+        gsap.from(".flow-step", {
+          autoAlpha: 0,
+          y: 44,
+          rotate: -0.8,
+          duration: 0.72,
+          stagger: 0.11,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".flow-map",
+            start: "top 76%",
+            once: true,
+          },
+        });
+
+        gsap.from(".flow-rail span", {
+          scaleX: 0,
+          duration: 1.05,
+          ease: "power3.inOut",
+          transformOrigin: "left center",
+          scrollTrigger: {
+            trigger: ".flow-map",
+            start: "top 76%",
+            once: true,
           },
         });
 
