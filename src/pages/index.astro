@@ -158,7 +158,6 @@ const faqItems = [
         </div>
 
         <div class="hero-visuals" aria-label="Flash patient management preview">
-          <div class="hero-glow" aria-hidden="true"></div>
           <img class="doctor-asset" src="/assets/doctor.png" alt="" aria-hidden="true" />
           <img
             class="product-screenshot"
@@ -209,12 +208,10 @@ const faqItems = [
             <div class="workflow-copy workflow-copy-scan" data-feature-copy>
               <span class="feature-copy-accent" aria-hidden="true"></span>
               <h2 id="workflow-title">
-                <span class="feature-mask"><span class="feature-reveal-line">Scan it.</span></span>
-                <span class="feature-mask"><span class="feature-reveal-line">Get a finished visit</span></span>
+                <span>Scan it.</span>
+                <span>Get a finished visit</span>
               </h2>
-              <p>
-                <span class="feature-text-mask"><span class="feature-reveal-text">Snap a handwritten note, and build a finished visit in a flash.</span></span>
-              </p>
+              <p>Snap a handwritten note, and build a finished visit in a flash.</p>
             </div>
           </div>
 
@@ -222,11 +219,9 @@ const faqItems = [
             <div class="workflow-copy workflow-copy-caught-up" data-feature-copy>
               <span class="feature-copy-accent" aria-hidden="true"></span>
               <h2>
-                <span class="feature-mask"><span class="feature-reveal-line">Skip the catch-up</span></span>
+                <span>Skip the catch-up</span>
               </h2>
-              <p>
-                <span class="feature-text-mask"><span class="feature-reveal-text">Get and understand patient history in seconds from anywhere.</span></span>
-              </p>
+              <p>Get and understand patient history in seconds from anywhere.</p>
             </div>
             <div class="workflow-art workflow-art-caught-up" aria-hidden="true">
               <img src="/assets/already-caught-up.png" alt="" loading="lazy" />
@@ -237,8 +232,8 @@ const faqItems = [
             <div class="workflow-copy workflow-copy-questions" data-feature-copy>
               <span class="feature-copy-accent" aria-hidden="true"></span>
               <h2>
-                <span class="feature-mask"><span class="feature-reveal-line">Ask it questions.</span></span>
-                <span class="feature-mask"><span class="feature-reveal-line">Like a colleague</span></span>
+                <span>Ask it questions.</span>
+                <span>Like a colleague</span>
               </h2>
             </div>
             <div class="workflow-art workflow-art-questions" aria-hidden="true">
@@ -253,9 +248,7 @@ const faqItems = [
                 <source src="/assets/ask-it-questions.mp4" type="video/mp4" />
               </video>
             </div>
-            <p class="workflow-question-caption" data-feature-caption>
-              <span class="feature-text-mask"><span class="feature-reveal-text">Ask it anything related to your patients and get instant answers.</span></span>
-            </p>
+            <p class="workflow-question-caption" data-feature-caption>Ask it anything related to your patients and get instant answers.</p>
           </div>
         </section>
 
@@ -267,9 +260,15 @@ const faqItems = [
           <div class="module-tabs" aria-label="Flash platform modules">
             {
               platformModules.map((module) => (
-                <article class="module-card">
-                  <h3>{module.label}</h3>
-                  <p>{module.body}</p>
+                <article class="module-card" tabindex="0">
+                  <div class="module-card-inner">
+                    <div class="module-card-face module-card-front">
+                      <h3>{module.label}</h3>
+                    </div>
+                    <div class="module-card-face module-card-back">
+                      <p>{module.body}</p>
+                    </div>
+                  </div>
                 </article>
               ))
             }
@@ -325,15 +324,44 @@ const faqItems = [
 
     <script>
       import gsap from "gsap";
-      import { Draggable } from "gsap/Draggable";
       import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-      gsap.registerPlugin(Draggable, ScrollTrigger);
+      gsap.registerPlugin(ScrollTrigger);
 
       const cards = gsap.utils.toArray(".info-card");
       const stage = document.querySelector("[data-card-stage]");
       const gatherCopy = document.querySelector(".gather-copy");
-      const storageKey = "flash-card-scatter-positions";
+      const moduleCards = Array.from(document.querySelectorAll(".module-card"));
+      const mobileModuleQuery = window.matchMedia("(max-width: 760px)");
+
+      let moduleScrollFrame;
+
+      const updateActiveModule = () => {
+        if (!mobileModuleQuery.matches) {
+          moduleCards.forEach((card) => card.classList.remove("is-active"));
+          return;
+        }
+
+        const viewportCenter = window.innerHeight / 2;
+        const activeCard = moduleCards.find((card) => {
+          const { top, bottom } = card.getBoundingClientRect();
+          return top <= viewportCenter && bottom >= viewportCenter;
+        });
+
+        moduleCards.forEach((card) => {
+          card.classList.toggle("is-active", card === activeCard);
+        });
+      };
+
+      const requestModuleUpdate = () => {
+        cancelAnimationFrame(moduleScrollFrame);
+        moduleScrollFrame = requestAnimationFrame(updateActiveModule);
+      };
+
+      updateActiveModule();
+      window.addEventListener("scroll", requestModuleUpdate, { passive: true });
+      window.addEventListener("resize", requestModuleUpdate);
+      mobileModuleQuery.addEventListener("change", updateActiveModule);
 
       const mm = gsap.matchMedia();
 
@@ -387,10 +415,10 @@ const faqItems = [
 
         gsap.utils.toArray("[data-feature-copy]").forEach((copy) => {
           const feature = copy.closest(".workflow-feature");
-          const revealItems = copy.querySelectorAll(".feature-reveal-line, .feature-reveal-text");
+          const revealItems = copy.querySelectorAll("h2 > span, p");
           const accent = copy.querySelector(".feature-copy-accent");
           const caption = feature.querySelector("[data-feature-caption]");
-          const captionItems = caption?.querySelectorAll(".feature-reveal-text") ?? [];
+          const captionItems = caption ? [caption] : [];
 
           const featureTextTimeline = gsap.timeline({
             scrollTrigger: {
@@ -499,10 +527,9 @@ const faqItems = [
 
         const scatterScale = window.matchMedia("(max-width: 760px)").matches ? 0.52 : 1;
         const easeCards = gsap.parseEase("power2.inOut");
-        const savedPositions = JSON.parse(localStorage.getItem(storageKey) || "{}");
         const scatterValues = cards.map((card) => ({
-          x: savedPositions[card.dataset.cardKey]?.x ?? Number.parseFloat(card.style.getPropertyValue("--scatter-x")) * scatterScale,
-          y: savedPositions[card.dataset.cardKey]?.y ?? Number.parseFloat(card.style.getPropertyValue("--scatter-y")) * scatterScale,
+          x: Number.parseFloat(card.style.getPropertyValue("--scatter-x")) * scatterScale,
+          y: Number.parseFloat(card.style.getPropertyValue("--scatter-y")) * scatterScale,
           rotation: Number.parseFloat(card.style.getPropertyValue("--scatter-rotate")),
         }));
         let sceneProgress = 0;
@@ -527,48 +554,6 @@ const faqItems = [
             y: 90 * (1 - gatherProgress),
           });
         };
-
-        Draggable.create(cards, {
-          type: "x,y",
-          bounds: ".cards-pin",
-          edgeResistance: 0.75,
-          cursor: "grab",
-          activeCursor: "grabbing",
-          zIndexBoost: true,
-          onPress() {
-            setSceneProgress(0);
-          },
-          onDrag() {
-            const index = cards.indexOf(this.target);
-            scatterValues[index].x = this.x;
-            scatterValues[index].y = this.y;
-          },
-          onRelease() {
-            const index = cards.indexOf(this.target);
-            scatterValues[index].x = this.x;
-            scatterValues[index].y = this.y;
-
-            const nextPositions = cards.reduce((positions, card, cardIndex) => {
-              positions[card.dataset.cardKey] = {
-                x: scatterValues[cardIndex].x,
-                y: scatterValues[cardIndex].y,
-              };
-              return positions;
-            }, {});
-
-            localStorage.setItem(storageKey, JSON.stringify(nextPositions));
-            window.flashCardPositions = nextPositions;
-            setSceneProgress(sceneProgress);
-          },
-        });
-
-        window.flashCardPositions = cards.reduce((positions, card, cardIndex) => {
-          positions[card.dataset.cardKey] = {
-            x: scatterValues[cardIndex].x,
-            y: scatterValues[cardIndex].y,
-          };
-          return positions;
-        }, {});
 
         const updateFromScroll = () => {
           const rect = stage.getBoundingClientRect();

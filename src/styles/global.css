@@ -195,23 +195,6 @@ h1 {
   perspective: 1200px;
 }
 
-.hero-glow {
-  background:
-    linear-gradient(135deg, rgba(167, 255, 53, 0.34), rgba(184, 220, 255, 0.44) 58%, rgba(255, 190, 168, 0.3));
-  border: 1.5px solid rgba(31, 33, 29, 0.12);
-  border-radius: 36% 64% 43% 57%;
-  filter: blur(0.2px);
-  height: 300px;
-  left: 118px;
-  opacity: 0.78;
-  position: absolute;
-  top: 68px;
-  transform: rotate(-8deg);
-  width: 690px;
-  z-index: 0;
-  animation: blob-shift 9s ease-in-out infinite alternate;
-}
-
 .doctor-asset {
   display: block;
   height: auto;
@@ -329,25 +312,10 @@ h1 {
     translate(
       calc(var(--scatter-x) * var(--scatter-scale)),
       calc(var(--scatter-y) * var(--scatter-scale))
-    )
+  )
     rotate(var(--scatter-rotate));
   transform-origin: center;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
   will-change: transform;
-  transition:
-    background-color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.info-card:active {
-  cursor: grabbing;
-}
-
-.info-card:hover {
-  background: #fdfff4;
-  box-shadow: 8px 8px 0 rgba(20, 23, 15, 0.16);
 }
 
 .info-card span {
@@ -442,21 +410,22 @@ h1 {
   margin-right: auto;
 }
 
-.feature-mask,
-.feature-text-mask {
+.workflow-copy h2 > span {
   display: block;
-  overflow: hidden;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  width: 100%;
 }
 
-.feature-reveal-line,
-.feature-reveal-text {
-  display: inline-block;
+.workflow-copy h2 > span,
+.workflow-copy p,
+.workflow-question-caption {
   transform-origin: left bottom;
   will-change: transform, opacity;
 }
 
-.workflow-copy-caught-up .feature-reveal-line,
-.workflow-copy-caught-up .feature-reveal-text {
+.workflow-copy-caught-up h2 > span,
+.workflow-copy-caught-up p {
   transform-origin: right bottom;
 }
 
@@ -618,26 +587,68 @@ h1 {
 .module-tabs {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 28px;
+  grid-template-columns: repeat(4, 240px);
+  justify-content: center;
+  margin-top: 32px;
 }
 
 .module-card {
-  background: rgba(255, 254, 250, 0.68);
-  border: 1px solid rgba(20, 23, 15, 0.13);
   border-radius: 8px;
-  min-height: 158px;
-  padding: 20px;
-  transition:
-    background-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+  height: 120px;
+  justify-self: center;
+  perspective: 1100px;
+  width: 240px;
 }
 
-.module-card:hover {
-  background: #fff;
-  box-shadow: 4px 4px 0 rgba(20, 23, 15, 0.1);
-  transform: translate(-2px, -2px);
+.module-card-inner {
+  border-radius: 8px;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 480ms cubic-bezier(0.2, 0.78, 0.2, 1);
+  width: 100%;
+}
+
+@media (hover: hover) {
+  .module-card:hover .module-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.module-card:focus-visible {
+  outline: 3px solid #4d7e00;
+  outline-offset: 4px;
+}
+
+.module-card:focus-visible .module-card-inner {
+  transform: rotateY(180deg);
+}
+
+.module-card.is-active .module-card-inner {
+  transform: rotateY(180deg);
+}
+
+.module-card-face {
+  align-items: center;
+  backface-visibility: hidden;
+  border: 1px solid rgba(20, 23, 15, 0.13);
+  border-radius: 8px;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 16px;
+  position: absolute;
+  text-align: center;
+}
+
+.module-card-front {
+  background: rgba(255, 254, 250, 0.68);
+}
+
+.module-card-back {
+  background: var(--flash-soft);
+  box-shadow: 4px 4px 0 rgba(20, 23, 15, 0.12);
+  transform: rotateY(180deg);
 }
 
 .flow-step-copy span {
@@ -664,10 +675,10 @@ h1 {
 }
 
 .module-card p {
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.42;
-  margin: 12px 0 0;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.3;
+  margin: 0;
 }
 
 .flow-step p,
@@ -786,7 +797,7 @@ h1 {
 .flow-qa {
   display: grid;
   gap: 10px;
-  margin: 34px auto 0;
+  margin: 72px auto 0;
   max-width: 860px;
 }
 
@@ -893,18 +904,6 @@ h1 {
   }
 }
 
-@keyframes blob-shift {
-  0% {
-    border-radius: 36% 64% 43% 57%;
-    transform: rotate(-8deg) scale(1);
-  }
-
-  100% {
-    border-radius: 58% 42% 61% 39%;
-    transform: rotate(5deg) scale(1.04);
-  }
-}
-
 @keyframes scroll-dot {
   0%,
   100% {
@@ -961,7 +960,7 @@ h1 {
 
 @media (max-width: 1080px) {
   .module-tabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 240px);
   }
 
   .flow-map {
@@ -987,6 +986,52 @@ h1 {
     top: auto;
     transform: none;
     width: auto;
+  }
+}
+
+@media (max-width: 1100px), (hover: none) and (pointer: coarse) {
+  .workflow-section {
+    margin-top: 300px;
+    padding-inline: 18px;
+  }
+
+  .workflow-feature-scan {
+    gap: 28px;
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .workflow-copy-scan {
+    margin: 0 auto;
+    max-width: 620px;
+    order: -1;
+    text-align: center;
+    width: 100%;
+  }
+
+  .workflow-copy-scan .feature-copy-accent {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .workflow-copy-scan h2 {
+    font-size: clamp(32px, 6vw, 40px);
+  }
+
+  .workflow-copy-scan p {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+  }
+
+  .workflow-art-scan {
+    justify-self: center;
+    width: min(112vw, 560px);
+  }
+
+  .workflow-art-scan::after {
+    left: 18%;
+    right: 18%;
   }
 }
 
@@ -1023,13 +1068,6 @@ h1 {
     margin-top: 58px;
     max-width: 420px;
     transform: none;
-  }
-
-  .hero-glow {
-    height: 214px;
-    left: 34px;
-    top: 46px;
-    width: min(355px, calc(100vw - 70px));
   }
 
   .doctor-asset {
@@ -1089,7 +1127,7 @@ h1 {
   }
 
   .workflow-section {
-    margin-top: 232px;
+    margin-top: 300px;
     padding-inline: 18px;
   }
 
@@ -1118,6 +1156,11 @@ h1 {
     text-align: center;
   }
 
+  .workflow-copy-scan .feature-copy-accent {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .workflow-copy-caught-up {
     max-width: 430px;
   }
@@ -1125,6 +1168,10 @@ h1 {
   .workflow-copy h2,
   .workflow-copy-questions h2 {
     font-size: clamp(34px, 10vw, 42px);
+  }
+
+  .workflow-copy-scan h2 {
+    font-size: clamp(30px, 8.4vw, 38px);
   }
 
   .workflow-copy p,
@@ -1178,12 +1225,17 @@ h1 {
   }
 
   .module-tabs {
-    margin-top: 24px;
+    margin-top: 32px;
   }
 
   .module-card {
-    min-height: auto;
-    padding: 16px;
+    height: 120px;
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .module-card-face {
+    padding: 18px;
   }
 
   .clinic-flow,
@@ -1243,7 +1295,7 @@ h1 {
   }
 
   .flow-qa {
-    margin-top: 28px;
+    margin-top: 80px;
   }
 
   .final-cta p {
@@ -1283,7 +1335,7 @@ h1 {
   }
 
   .workflow-section {
-    margin-top: 240px;
+    margin-top: 300px;
   }
 
   .workflow-art-scan {
@@ -1293,6 +1345,149 @@ h1 {
 
   .workflow-art-caught-up {
     width: 132vw;
+  }
+}
+
+/* Mobile-first workflow layout. Desktop columns are enabled only when there is
+   enough real screen width and a precise pointing device. */
+.workflow-section {
+  margin-top: 300px;
+  padding-inline: 18px;
+}
+
+.workflow-feature-scan,
+.workflow-feature-caught-up {
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.workflow-feature-scan {
+  min-height: auto;
+}
+
+.workflow-feature-caught-up {
+  margin-top: 84px;
+}
+
+.workflow-feature-questions {
+  margin-top: 96px;
+}
+
+.workflow-copy,
+.workflow-copy-scan,
+.workflow-copy-caught-up {
+  justify-self: center;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: min(620px, calc(100vw - 36px));
+  min-width: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.workflow-copy-scan {
+  margin-top: 0;
+  order: -1;
+}
+
+.workflow-copy .feature-copy-accent {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.workflow-copy h2,
+.workflow-copy-questions h2 {
+  font-size: clamp(30px, 8.4vw, 40px);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.workflow-copy p,
+.workflow-question-caption {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: min(600px, calc(100vw - 36px));
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.workflow-art-scan,
+.workflow-art-caught-up,
+.workflow-art-questions {
+  justify-self: center;
+}
+
+.workflow-art-scan {
+  transform: none;
+  width: min(112vw, 560px);
+}
+
+.workflow-art-caught-up {
+  width: min(118vw, 620px);
+}
+
+@media (min-width: 1200px) and (hover: hover) and (pointer: fine) {
+  .workflow-section {
+    margin: 420px auto 0;
+    padding: 0 clamp(20px, 4vw, 64px) clamp(34px, 5vw, 56px);
+  }
+
+  .workflow-feature-scan {
+    gap: clamp(32px, 6vw, 72px);
+    grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
+    min-height: 590px;
+  }
+
+  .workflow-feature-caught-up {
+    gap: clamp(34px, 6vw, 70px);
+    grid-template-columns: minmax(310px, 0.82fr) minmax(0, 1.18fr);
+    margin-top: clamp(104px, 14vw, 160px);
+  }
+
+  .workflow-feature-questions {
+    margin-top: clamp(132px, 16vw, 200px);
+  }
+
+  .workflow-copy {
+    margin-left: 0;
+    margin-right: 0;
+    width: auto;
+  }
+
+  .workflow-copy-scan {
+    justify-self: stretch;
+    margin-top: clamp(52px, 7vw, 92px);
+    max-width: 430px;
+    order: 0;
+    text-align: left;
+  }
+
+  .workflow-copy-scan .feature-copy-accent {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .workflow-copy-caught-up {
+    max-width: 455px;
+    text-align: right;
+  }
+
+  .workflow-copy h2 {
+    font-size: clamp(36px, 3.6vw, 40px);
+  }
+
+  .workflow-copy-questions h2 {
+    font-size: clamp(35px, 3.6vw, 40px);
+  }
+
+  .workflow-art-scan {
+    justify-self: end;
+    width: min(100%, 600px);
+  }
+
+  .workflow-art-caught-up {
+    justify-self: end;
+    width: min(100%, 670px);
   }
 }
 
